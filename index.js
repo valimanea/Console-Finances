@@ -86,3 +86,55 @@ var finances = [
 ['Jan-2017', 138230],
 ['Feb-2017', 671099]
 ];
+
+// Your task is to write JavaScript code that analyzes the records to calculate each of the following:
+
+console.log("Financial Analysis" + "\n--------------")
+
+// The total number of months included in the dataset.
+var totalMonths=0;
+for (let i = 0; i < finances.length; i++) {
+        if (typeof finances[i][0]=="string"){
+            totalMonths++;
+    }
+  }
+
+console.log("Total number of months: " + totalMonths);
+
+// The net total amount of Profit/Losses over the entire period.
+var balance=0;
+for (let i = 0; i < finances.length; i++) {
+    balance = balance + finances[i][1];
+}
+
+console.log("Total: $" + balance);
+
+// The average of the changes in Profit/Losses over the entire period.
+var change;
+var amounts=[];
+var averageChange;
+var listChanges=[];
+for (let i = 0; i < finances.length; i++) {
+    amounts[i] = finances[i][1];
+}
+
+// You will need to track what the total change in profits are from month to month and then find the average.
+// (Total/Number of months)
+for(let i = 1; i < amounts.length; i++){
+    listChanges[i-1]=amounts[i]-amounts[i-1];
+}
+
+averageChange = listChanges => listChanges.reduce((prev, curr) => prev + curr) / listChanges.length;
+
+console.log("Average Change: $" + Math.round(averageChange(listChanges)*100)/100 + " -> including the first month");
+
+
+// The greatest increase in profits (date and amount) over the entire period.
+
+var indexMax = listChanges.indexOf(Math.max(...listChanges));
+console.log("Greatest increase was in: " + finances[indexMax+1][0] + " by the amount of: $" + listChanges[indexMax] + " (current month - previous month)");
+
+// The greatest decrease in losses (date and amount) over the entire period.
+
+var indexMin = listChanges.indexOf(Math.min(...listChanges));
+console.log("Greatest decrease was in: " + finances[indexMin+1][0] + " by the amount of: $" + listChanges[indexMin] + " (current month - previous month)");
